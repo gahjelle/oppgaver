@@ -113,7 +113,146 @@ spillet vårt.
   variabelen `(sensor - hode)`{.b} som gjelder for alle
   figurer). Plasser denne figuren ved toppen av hodet til Jumpman.
 
++ Den nye hode-sensoren kan vi bruke til å stoppe Jumpman når han
+  hopper opp i en plattform. Legg til denne testen på `sjekk
+  plattform`-skriptet til `Kontroller`-figuren:
+
+  ```blocks
+      hvis <<(sensor - hode) = [ja]> og <(fartY) > [0]>>
+          sett [fartY v] til [0]
+      slutt
+  ```
+
++ Tegn en ny figur som du kaller `Murstein`. Denne kan gjerne være
+  ganske liten. Vi skal snart klone den for å bruke mange mursteiner
+  til å lage plattformer med.
+
+  ![](murstein.png)
+
++ Først skal vi se hvor lett det nå er for Jumpman å sense mursteinen.
+  Lag et skript som sjekker sensorene:
+
+  ```blocks
+      når jeg mottar [sjekk sensor v]
+      hvis <berører [Sensor - Fot v]?>
+          sett [sensor - fot v] til [ja]
+      slutt
+      hvis <berører [Sensor - Hode v]?>
+          sett [sensor - hode v] til [ja]
+      slutt
+  ```
+
++ Plasser `Murstein`-figuren et passende sted og test spillet ditt.
+  Stopper Jumpman når han hopper opp i mursteinen?
+
++ Vi skal nå bruke kloning for å plassere ut flere mursteiner. Lag et
+  skript på `Murstein` som starter med `når jeg mottar
+  [startposisjon v]`{.b}. Skriv så kode som plasserer ut kloner av
+  `Murstein` på spillbrettet. Til dette bruker du stort sett `gå til
+  x: () y: ()`{.b}- og `lag klon av [meg v]`{.b}-klosser.
+
+  Om du vil lage en sammenhengende plattform av mursteiner kan du også
+  bruke en `gjenta`{.blockcontrol}-løkke. For eksempel,
+
+  ```blocks
+      gå til x: (-80) y: (-70)
+      gjenta (5) ganger
+          lag klon av [meg v]
+          endre x med (34)
+      slutt
+  ```
+
+  Tallet i `endre x med ()`{.b}-klossen vil avhenge av hvor bred
+  `Murstein`-figuren din er. Du kan prøve deg frem, eller sjekke
+  bredden under `Drakter`-fanen:
+
+  ![](murstein_bredde.png)
+
 # Steg 3: Fruktsalat og andre superkrefter! {.activity}
+
+*I Super Mario kan man hoppe opp i spesielle mursteiner for å finne
+ penger, sopper og andre spennende ting. Vi skal nå se hvordan Jumpman
+ kan gjøre det samme.*
+
+## Sjekkliste {.activity}
+
+Vi vil nå se hvordan vi kan gjemme en fruktsalat inne i en
+murstein. Om Jumpman finner denne og spiser den vil han kunne hoppe
+ekstra høyt. Om du senere vil gjemme andre ting med andre effekter kan
+du gjøre det på omtrent samme måte.
+
++ For å endre på hvor høyt Jumpman hopper trenger vi en variabel. Gå
+  til `Kontroller`-figuren, og lag en variabel `(hopp)`{.b} som
+  gjelder kun *for denne figuren*. Legg til en `sett [hopp v] til
+  [5]`{.b}-kloss på `startposisjon`-skriptet, og bruk denne variabelen
+  til å sette `(fartY)`{.b} når pil opp trykkes.
+
++ Klikk så på `Murstein`-figuren og lag en ny variabel `(spesial)`{.b}
+  som også gjelder kun *for denne figuren*. Vi vil bruke denne til å
+  indikere hva vi har gjemt inne i mursteinen.
+
++ Legg en `sett [spesial v] til [nei]`{.b}-kloss øverst i
+  `startposisjon`-skriptet. Velg nå en mursteinklone og `sett
+  [spesial v] til [fruktsalat]`{.b} før den lages. Husk å sette
+  `(spesial)`{.b} tilbake til `nei` for resten av mursteinene.
+
++ Vi skal nå gjøre en endring i `sjekk sensor`-skriptet til
+  `Murstein`. Lag to variabler, `(mursteinX)`{.b} og
+  `(mursteinY)`{.b}, som må gjelde *for alle figurer*, og legg
+  deretter den følgende testen inne i `hvis <berører
+  [Sensor - Hode v]?>`{.b}-testen:
+
+  ```blocks
+      hvis <ikke <(spesial) = [nei]>>
+          sett [mursteinX v] til (x-posisjon)
+          sett [mursteinY v] til (y-posisjon)
+          send melding (sett sammen [murstein-] (spesial))
+          sett [spesial v] til [nei]
+      slutt
+  ```
+
+  Legg merke til hvordan vi bruker variabelen `(spesial)`{.b} til å
+  bestemme hvilken melding som sendes ut. Om for eksempel
+  `(spesial)`{.b} er lik `fruktsalat` vil vi her sende meldingen
+  `murstein-fruktsalat`.
+
++ Lag nå en ny `Fruktsalat`-figur. Du kan tegne den selv eller bruke
+  `Ting/Fruit Salad`-figuren i Scratch-biblioteket. La figuren
+  `skjule`{.blocklooks} seg på `startposisjon`-meldingen.
+
++ Når vi mottar `murstein-fruktsalat` vil vi lage en klon av
+  `Fruktsalat`-figuren og vise den. For å vite hvor den skal vises
+  bruker vi `(mursteinX)`{.b}- og `(mursteinY)`{.b}-variablene.
+
+  ```blocks
+      når jeg mottar [murstein-fruktsalat v]
+      sett x til (mursteinX)
+      sett y til ((mursteinY) + (30))
+      lag klon av [meg v]
+  ```
+
+  Her har vi satt `y` litt høyere enn `(mursteinY)`{.b} for at
+  `Fruktsalat` skal dukke opp over `Murstein`.
+
++ Lag så et skript på `Fruktsalat` som sier i fra om at Jumpman spiser
+  den. Skriptet kan begynne med `når jeg starter som klon`{.b}. Videre
+  kan du `vise`{.blocklooks} klonen, `vente til`{.blockcontrol} klonen
+  `berører Kontroller`{.blocksensing}, `sende melding spis
+  fruktsalat`{.blockevents} og til slutt `slette denne
+  klonen`{.blockcontrol}.
+
++ Nå mangler vi bare at Jumpman hopper høyere etter at han har spist
+  fruktsalaten. Dette er lett. `Kontroller` må svare på meldingen
+  `spis fruktsalat` med å sette `(hopp)`{.b} til et passende
+  tall. Prøv for eksempel 8.
+
++ Test spillet ditt. Fungerer fruktsalaten? Dukker den opp når Jumpman
+  skaller i den riktige mursteinen? Kan Jumpman hoppe høyere etter at
+  han har spist `Fruktsalat`?
+
++ Endre på spillbrettet ditt ved å flytte på eller lage nye
+  mursteiner. Du kan nå ha mursteiner Jumpman ikke klarer å nå før han
+  har spist fruktsalaten.
 
 # Steg 4: Videreutvikling av spillet {.activity}
 
@@ -122,6 +261,10 @@ spillet vårt.
  til hvordan du kan jobbe videre med spillet før neste del.*
 
 ## Ideer til videreutvikling {.check}
+
++ Legg til andre spesialmursteiner. For eksempel kan du gjemme nøkler
+  i mursteinene som du må finne for å låse opp dører, eller kanskje
+  noe som gjør at Jumpman løper fortere.
 
 + Legg til `Sensor - Venstre`- og `Sensor - Høyre`-figurer. Disse
   lager du på samme måte som `Sensor - Fot`- og `Sensor -
@@ -141,3 +284,29 @@ spillet vårt.
           endre y med (2)
       slutt
   ```
+
++ Nå er en av utfordringene i spillet å faktisk finne mursteinen hvor
+  fruktsalaten er gjemt. Det trenger ikke være det. Du kan for
+  eksempel tegne en egen drakt for spesielle mursteiner. Deretter kan
+  du lage et `vis animasjon`-skript på `Murstein` som `bytter
+  drakt`{.blocklooks} avhengig av `(spesial)`{.b}-variabelen.
+
++ En viktig del av Super Mario-spillet er å samle penger som ofte er
+  gjemt i mursteiner. Kanskje du kan lage noe tilsvarende? Du kan
+  bruke samme `(spesial)`{.b}-variabel som vi har brukt til
+  `Fruktsalat`, eller om du vil ha muligheten til å gjemme flere
+  penger i en murstein kan det være enklere med en ny variabel som
+  teller hvor mange penger som er igjen. Lag også en ny
+  `(Poeng)`{.b}-variabel som blant annet teller hvor mange penger du
+  har funnet.
+
++ Kan du få fruktsalaten til å flytte på seg etter at den er funnet?
+  Den trenger i såfall sine egne `(fartX)`{.b}- og
+  `(fartY)`{.b}-variabler. Du kan da lage `sjekk plattform`- og `flytt
+  figurer`-skript på `Fruktsalat` som styrer figuren.
+
++ Tegn andre figurer enn mursteiner som fungerer som plattformer. Det
+  viktigste er å implementere `sjekk sensor`-skriptene. Spesielt kan
+  du fjerne alle plattformer fra bakgrunnen og heller bruke `Murstein`
+  og andre figurer (vi skal uansett gjøre dette i
+  [neste del](jumpman_3_skrolling.html)).
