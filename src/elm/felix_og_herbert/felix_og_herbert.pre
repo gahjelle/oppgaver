@@ -1,0 +1,148 @@
+---
+title: Felix og Herbert
+level: 3
+author: Teodor Heggelund og Geir Arne Hjelle
+language: nb
+---
+
+# Introduksjon {.intro}
+
+Vi vil nå prøve å lage en Elm-versjon av
+[Felix og Herbert](../../scratch/felix_og_herbert/felix_og_herbert.html)-spillet
+som du kanskje allerede har laget i Scratch. Spillet går ut på at katten Felix
+skal fange musa Herbert. Du styrer Herbert med musepekeren og skal prøve å unngå
+å bli tatt av Felix. Jo lenger du unngår ham jo flere poeng får du, men blir du
+tatt, går poengsummen din ned.
+
+![](felix_og_herbert.png)
+
+
+# Steg 1: Tegn bakgrunnen og Herbert {.activity}
+
++ I dette prosjektet vil vi bruke pakkene `svg` (for å tegne) og `mouse` (for å
+  kontrollere med musepekeren). Om du ikke allerede har disse i
+  Elm-installasjonen din kan du installere dem ved å skrive
+
+    `elm package install elm-lang/svg`
+
+    og
+
+    `elm package install elm-lang/mouse`
+
++ Vi vil begynne med å bare tegne bakgrunnen, og deretter Herbert-figuren. For å
+  gjøre dette må vi først laste ned disse som bildefiler. Last ned
+  [brick_wall2.png](src/brick_wall2.png) og [mouse1-a.svg](src/mouse1-a.svg) til
+  datamaskinen din ved å høyreklikke på lenkene og velge lagre.
+
++ Vi begynner med å tegne bakgrunnen og Herbert. Til dette skal vi bruke SVG som
+  du allerede har sett i [Tegning med SVG](../05_tegne/05_tegne.html)-oppgaven.
+
+    Skriv inn programmet nedenfor. Det nye her er at vi bruker `image` for å
+    tegne bakgrunnsbildet og Herbert-figuren.
+
+    ```elm
+    {Main_1a-elm}
+    ```
+
+    Dette skal
+
++ Lag Herbert mindre
+
+    ```elm
+    {Main_1b-elm:--start_herbert - --end_herbert}
+    ```
+
+    ```elm
+    {Main_1b-elm:--start_tegn - --end_tegn}
+    ```
+
+
+# Steg 2: Herbert følger musepekeren {.activity}
+
++ Bruk fullstendig HTML program
+
+    ```elm
+    {Main_2a-elm}
+    ```
+
++ Abonner på mus og flytt Herbert
+
+    ```elm
+    {Main_2b-elm}
+    ```
+
++ viewFigure med musepeker i senter av figuren
+
+    ```elm
+    {Main_2c-elm}
+    ```
+
+# Steg 3: Tegn Felix som jager Herbert {.activity}
+
++ Tegn Felix
+
+    ```elm
+    {Main_3a-elm}
+    ```
+
++ Abonner på tid
+
+    ```elm
+    {Main_3b-elm}
+    ```
+
++ Flytt Felix
+
+    ```elm
+    {Main_3c-elm}
+    ```
+
+# Steg 4: Flere drakter {.activity}
+
++ Animer Felix ved å bytte mellom to drakter
+
+    ```elm
+    {Main_4a-elm}
+    ```
+
+# Steg 5: Felix fanger Herbert {.activity}
+
++ Kollisjonsdeteksjon
+
+    ```elm
+    {Main_5a-elm}
+    ```
+
++ Vis Herbert som spøkelse
+
+    ```elm
+    {Main_5b-elm}
+    ```
+
++ La Herbert gjenoppstå
+
+    ```elm
+    {Main_5c-elm}
+    ```
+
+# Steg 6: Tell poeng {.activity}
+
++ Tell poeng
+
+    ```elm
+    {Main_6a-elm}
+    ```
+
++ Vis poeng
+
+    ```elm
+    {Main_6b-elm:--start_poeng - --end_poeng}
+    ```
+
++ Trekk fra poeng hvert sekund hvis fanget
+
+    ```elm
+    {Main_6c-elm:--start_poeng - --end_poeng}
+    ```
+
+
